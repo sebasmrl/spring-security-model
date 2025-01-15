@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
@@ -36,9 +37,11 @@ public class User {
         joinColumns = @JoinColumn(name="user_id"),
         inverseJoinColumns = @JoinColumn(name="role_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})}
-    )
+    ) //no cascade: porque no se crea junto al usuario
     List<Role> roles;
 
+    @Transient
+    private boolean isAdmin;
 
     //methods
     public Long getId() {
@@ -88,6 +91,16 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     
